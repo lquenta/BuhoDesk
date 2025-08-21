@@ -17,6 +17,7 @@ public partial class MainWindow : Window
     private readonly UdpScreenService _udpScreenService;
     private readonly ScreenCaptureService _screenService;
     private readonly InputSimulationService _inputService;
+    private readonly TaskbarNotificationService _taskbarNotification;
     private readonly ObservableCollection<string> _connectedClients;
     private readonly ObservableCollection<ChatMessage> _chatMessages;
     private readonly ILogger _logger;
@@ -33,6 +34,7 @@ public partial class MainWindow : Window
             _screenService = new ScreenCaptureService(_logger);
             _networkService = new NetworkServerService(SERVER_PORT, _inputService, _screenService, _logger);
             _udpScreenService = new UdpScreenService(_logger);
+            _taskbarNotification = new TaskbarNotificationService(this);
             
             _connectedClients = new ObservableCollection<string>();
             _chatMessages = new ObservableCollection<ChatMessage>();
@@ -108,6 +110,12 @@ public partial class MainWindow : Window
             _connectedClients.Add(clientId);
             UpdateConnectionCount();
             _logger.Info("ServerUI", $"Client connected: {clientId}");
+            
+            // Alert user with taskbar flash for new client connection
+            if (!IsActive)
+            {
+                _taskbarNotification.AlertUser(3, 400); // Flash 3 times, every 400ms
+            }
         });
     }
 
@@ -146,6 +154,13 @@ public partial class MainWindow : Window
             if (ChatMessagesListBox.Items.Count > 0)
             {
                 ChatMessagesListBox.ScrollIntoView(ChatMessagesListBox.Items[ChatMessagesListBox.Items.Count - 1]);
+            }
+            
+            // Alert user with taskbar flash if window is not active
+            if (!IsActive)
+            {
+                _taskbarNotification.AlertUser(5, 300); // Flash 5 times, every 300ms
+                _logger.Info("ServerUI", $"Chat message received from {chatMessage.SenderName}: {chatMessage.Message}");
             }
         });
     }
@@ -239,6 +254,7 @@ public partial class MainWindow : Window
         // Unsubscribe from language changes
         LocalizationService.Instance.LanguageChanged -= OnLanguageChanged;
         
+        _taskbarNotification?.Dispose();
         _networkService?.Dispose();
         _screenService?.Dispose();
         base.OnClosed(e);

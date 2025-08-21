@@ -16,6 +16,7 @@ public partial class MainWindow : Window
     private readonly NetworkClientService _networkService;
     private readonly UdpScreenClientService _udpScreenService;
     private readonly ILogger _logger;
+    private readonly TaskbarNotificationService _taskbarNotification;
     private readonly ObservableCollection<ChatMessage> _chatMessages;
     private int _frameCount = 0;
     private DateTime _lastFrameTime = DateTime.MinValue;
@@ -31,6 +32,7 @@ public partial class MainWindow : Window
         _logger = new Logger();
         _networkService = new NetworkClientService(_logger);
         _udpScreenService = new UdpScreenClientService(_logger, _networkService.ClientId);
+        _taskbarNotification = new TaskbarNotificationService(this);
         _chatMessages = new ObservableCollection<ChatMessage>();
         
         _networkService.ConnectionStatusChanged += OnConnectionStatusChanged;
@@ -116,12 +118,24 @@ public partial class MainWindow : Window
                 ConnectionStatusIndicator.Fill = System.Windows.Media.Brushes.Green;
                 ConnectButton.IsEnabled = false;
                 DisconnectButton.IsEnabled = true;
+                
+                // Alert user when successfully connected
+                if (!IsActive)
+                {
+                    _taskbarNotification.AlertUser(2, 200); // Quick flash to indicate success
+                }
             }
             else if (status.Contains("Disconnected"))
             {
                 ConnectionStatusIndicator.Fill = System.Windows.Media.Brushes.Red;
                 ConnectButton.IsEnabled = true;
                 DisconnectButton.IsEnabled = false;
+                
+                // Alert user when disconnected
+                if (!IsActive)
+                {
+                    _taskbarNotification.AlertUser(3, 300); // Flash to indicate disconnection
+                }
             }
             else if (status.Contains("Connecting"))
             {
@@ -221,6 +235,13 @@ public partial class MainWindow : Window
             if (ChatMessagesListBox.Items.Count > 0)
             {
                 ChatMessagesListBox.ScrollIntoView(ChatMessagesListBox.Items[ChatMessagesListBox.Items.Count - 1]);
+            }
+            
+            // Alert user with taskbar flash if window is not active
+            if (!IsActive)
+            {
+                _taskbarNotification.AlertUser(5, 300); // Flash 5 times, every 300ms
+                _logger.Info("ClientUI", $"Chat message received from {chatMessage.SenderName}: {chatMessage.Message}");
             }
         });
     }
@@ -452,6 +473,7 @@ public partial class MainWindow : Window
         // Unsubscribe from language changes
         LocalizationService.Instance.LanguageChanged -= OnLanguageChanged;
         
+        _taskbarNotification?.Dispose();
         _networkService?.Dispose();
         base.OnClosed(e);
     }
