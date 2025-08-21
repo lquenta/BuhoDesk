@@ -441,7 +441,7 @@ public partial class MainWindow : Window
     {
         var loc = LocalizationService.Instance;
         MessageBox.Show(
-            $"BuhoDesk Client\nVersion 1.0\n\n{loc.GetString("About")}",
+            $"BuhoDesk Client\nVersion 1.0\n\n{loc.GetString("About")}\n\nLeonardo Quenta - 2025\nFrom Bolivia with love ❤️",
             loc.GetString("About"),
             MessageBoxButton.OK,
             MessageBoxImage.Information);

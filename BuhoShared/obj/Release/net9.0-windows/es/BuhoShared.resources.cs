@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BuhoShared")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute(" ")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2399025f3bbc185140e26bda957203ccbea6dbe0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ba0a282360120c28326ab69c157184fe53ecee91")]
 [assembly: System.Reflection.AssemblyProductAttribute("BuhoShared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BuhoShared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

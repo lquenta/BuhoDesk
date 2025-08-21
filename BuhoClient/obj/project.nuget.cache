@@ -1,15 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "Fs0WigcS+s0=",
+  "dgSpecHash": "YzNQAuTSqBs=",
   "success": true,
   "projectFilePath": "C:\\Users\\lquenta\\Desktop\\AnyDeskClone\\BuhoClient\\BuhoClient.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\lquenta\\.nuget\\packages\\microsoft.net.illink.tasks\\9.0.8\\microsoft.net.illink.tasks.9.0.8.nupkg.sha512",
     "C:\\Users\\lquenta\\.nuget\\packages\\microsoft.win32.systemevents\\9.0.8\\microsoft.win32.systemevents.9.0.8.nupkg.sha512",
-    "C:\\Users\\lquenta\\.nuget\\packages\\system.drawing.common\\9.0.8\\system.drawing.common.9.0.8.nupkg.sha512",
-    "C:\\Users\\lquenta\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\9.0.8\\microsoft.netcore.app.runtime.win-x64.9.0.8.nupkg.sha512",
-    "C:\\Users\\lquenta\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\9.0.8\\microsoft.windowsdesktop.app.runtime.win-x64.9.0.8.nupkg.sha512",
-    "C:\\Users\\lquenta\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\9.0.8\\microsoft.aspnetcore.app.runtime.win-x64.9.0.8.nupkg.sha512"
+    "C:\\Users\\lquenta\\.nuget\\packages\\system.drawing.common\\9.0.8\\system.drawing.common.9.0.8.nupkg.sha512"
   ],
   "logs": []
 }

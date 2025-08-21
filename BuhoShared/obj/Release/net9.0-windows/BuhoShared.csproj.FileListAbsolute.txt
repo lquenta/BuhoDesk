@@ -20,3 +20,4 @@ C:\Users\lquenta\Desktop\AnyDeskClone\BuhoShared\obj\Release\net9.0-windows\Buho
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoShared\obj\Release\net9.0-windows\refint\BuhoShared.dll
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoShared\obj\Release\net9.0-windows\BuhoShared.pdb
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoShared\obj\Release\net9.0-windows\ref\BuhoShared.dll
+C:\Users\lquenta\Desktop\AnyDeskClone\BuhoShared\obj\Release\net9.0-windows\BuhoShared.sourcelink.json

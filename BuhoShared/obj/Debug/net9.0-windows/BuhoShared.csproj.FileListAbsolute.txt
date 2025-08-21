@@ -20,3 +20,4 @@ C:\Users\lquenta\Desktop\AnyDeskClone\BuhoShared\obj\Debug\net9.0-windows\BuhoSh
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoShared\bin\Debug\net9.0-windows\es\BuhoShared.resources.dll
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoShared\obj\Debug\net9.0-windows\es\BuhoShared.resources.cs
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoShared\obj\Debug\net9.0-windows\es\BuhoShared.resources.dll
+C:\Users\lquenta\Desktop\AnyDeskClone\BuhoShared\obj\Debug\net9.0-windows\BuhoShared.sourcelink.json

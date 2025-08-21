@@ -2,7 +2,6 @@ C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\bin\Debug\net9.0-windows\BuhoCl
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\bin\Debug\net9.0-windows\BuhoClient.deps.json
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\bin\Debug\net9.0-windows\BuhoClient.runtimeconfig.json
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\bin\Debug\net9.0-windows\BuhoClient.dll
-C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\bin\Debug\net9.0-windows\BuhoClient.pdb
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\bin\Debug\net9.0-windows\BuhoShared.dll
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\bin\Debug\net9.0-windows\BuhoShared.pdb
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\BuhoClient.csproj.AssemblyReference.cache
@@ -21,7 +20,6 @@ C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\BuhoCl
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\BuhoClient.csproj.Up2Date
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\BuhoClient.dll
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\refint\BuhoClient.dll
-C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\BuhoClient.pdb
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\BuhoClient.genruntimeconfig.cache
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\ref\BuhoClient.dll
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\bin\Debug\net9.0-windows\es\BuhoShared.resources.dll

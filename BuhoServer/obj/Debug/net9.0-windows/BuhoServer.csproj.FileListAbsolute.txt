@@ -2,7 +2,6 @@ C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\bin\Debug\net9.0-windows\BuhoSe
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\bin\Debug\net9.0-windows\BuhoServer.deps.json
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\bin\Debug\net9.0-windows\BuhoServer.runtimeconfig.json
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\bin\Debug\net9.0-windows\BuhoServer.dll
-C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\bin\Debug\net9.0-windows\BuhoServer.pdb
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\bin\Debug\net9.0-windows\BuhoShared.dll
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\bin\Debug\net9.0-windows\BuhoShared.pdb
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\obj\Debug\net9.0-windows\BuhoServer.csproj.AssemblyReference.cache
@@ -20,7 +19,6 @@ C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\obj\Debug\net9.0-windows\BuhoSe
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\obj\Debug\net9.0-windows\BuhoServer.csproj.Up2Date
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\obj\Debug\net9.0-windows\BuhoServer.dll
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\obj\Debug\net9.0-windows\refint\BuhoServer.dll
-C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\obj\Debug\net9.0-windows\BuhoServer.pdb
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\obj\Debug\net9.0-windows\BuhoServer.genruntimeconfig.cache
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\obj\Debug\net9.0-windows\ref\BuhoServer.dll
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoServer\bin\Debug\net9.0-windows\es\BuhoShared.resources.dll

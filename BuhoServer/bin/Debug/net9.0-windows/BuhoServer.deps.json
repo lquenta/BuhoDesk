@@ -30,6 +30,11 @@
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
+        },
+        "resources": {
+          "es/BuhoShared.resources.dll": {
+            "locale": "es"
+          }
         }
       }
     }
