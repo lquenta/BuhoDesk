@@ -18,6 +18,7 @@ public partial class MainWindow : Window
     private readonly ScreenCaptureService _screenService;
     private readonly InputSimulationService _inputService;
     private readonly TaskbarNotificationService _taskbarNotification;
+    private readonly NetworkDiscoveryService _discoveryService;
     private readonly ObservableCollection<string> _connectedClients;
     private readonly ObservableCollection<ChatMessage> _chatMessages;
     private readonly ILogger _logger;
@@ -34,6 +35,7 @@ public partial class MainWindow : Window
             _screenService = new ScreenCaptureService(_logger);
             _networkService = new NetworkServerService(SERVER_PORT, _inputService, _screenService, _logger);
             _udpScreenService = new UdpScreenService(_logger);
+            _discoveryService = new NetworkDiscoveryService(_logger);
             _taskbarNotification = new TaskbarNotificationService(this);
             
             _connectedClients = new ObservableCollection<string>();
@@ -52,6 +54,21 @@ public partial class MainWindow : Window
             LocalizationService.Instance.LanguageChanged += OnLanguageChanged;
             
             _logger.Info("ServerUI", "Buho Server application started");
+            
+            // Start discovery service to listen for client discovery requests
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await _discoveryService.StartListeningForRequestsAsync(SERVER_PORT, "BuhoServer", "Buho Desktop Server");
+                    _logger.Info("ServerUI", "Discovery service started successfully");
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error("ServerUI", $"Failed to start discovery service: {ex.Message}");
+                }
+            });
+            
             UpdateServerInfo();
             UpdateLocalizedStrings();
         }
@@ -257,6 +274,7 @@ public partial class MainWindow : Window
         LocalizationService.Instance.LanguageChanged -= OnLanguageChanged;
         
         _taskbarNotification?.Dispose();
+        _discoveryService?.Dispose();
         _networkService?.Dispose();
         _screenService?.Dispose();
         base.OnClosed(e);

@@ -15,9 +15,11 @@ public partial class MainWindow : Window
 {
     private readonly NetworkClientService _networkService;
     private readonly UdpScreenClientService _udpScreenService;
+    private readonly NetworkDiscoveryService _discoveryService;
     private readonly ILogger _logger;
     private readonly TaskbarNotificationService _taskbarNotification;
     private readonly ObservableCollection<ChatMessage> _chatMessages;
+    private readonly ObservableCollection<DiscoveredServer> _discoveredServers;
     private int _frameCount = 0;
     private DateTime _lastFrameTime = DateTime.MinValue;
     private double _scaleX = 1.0;
@@ -32,20 +34,26 @@ public partial class MainWindow : Window
         _logger = new Logger();
         _networkService = new NetworkClientService(_logger);
         _udpScreenService = new UdpScreenClientService(_logger, _networkService.ClientId);
+        _discoveryService = new NetworkDiscoveryService(_logger);
         _taskbarNotification = new TaskbarNotificationService(this);
         _chatMessages = new ObservableCollection<ChatMessage>();
+        _discoveredServers = new ObservableCollection<DiscoveredServer>();
         
         _networkService.ConnectionStatusChanged += OnConnectionStatusChanged;
         _networkService.ConnectionResponseReceived += OnConnectionResponseReceived;
         _networkService.FrameReceived += OnFrameReceived;
         _networkService.ChatMessageReceived += OnChatMessageReceived;
         _udpScreenService.FrameReceived += OnUdpFrameReceived;
+        _discoveryService.ServersDiscovered += OnServersDiscovered;
         
         // Subscribe to language changes
         LocalizationService.Instance.LanguageChanged += OnLanguageChanged;
         
         // Set up chat UI
         ChatMessagesListBox.ItemsSource = _chatMessages;
+        
+        // Set up server discovery UI
+        DiscoveredServersComboBox.ItemsSource = _discoveredServers;
         
         // Set focus to the image for keyboard events
         RemoteDesktopImage.Focusable = true;
@@ -223,6 +231,23 @@ public partial class MainWindow : Window
     {
         // Handle UDP frames the same way as TCP frames
         OnFrameReceived(sender, frame);
+    }
+
+    private void OnServersDiscovered(object? sender, List<DiscoveredServer> servers)
+    {
+        Dispatcher.Invoke(() =>
+        {
+            _discoveredServers.Clear();
+            foreach (var server in servers)
+            {
+                _discoveredServers.Add(server);
+            }
+            
+            if (servers.Count > 0)
+            {
+                _logger.Info("ClientUI", $"Discovered {servers.Count} servers");
+            }
+        });
     }
 
     private void OnChatMessageReceived(object? sender, ChatMessage chatMessage)
@@ -444,6 +469,44 @@ public partial class MainWindow : Window
         logWindow.Show();
     }
 
+    private async void DiscoverServersButton_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            DiscoverServersButton.IsEnabled = false;
+            DiscoverServersButton.Content = "Discovering...";
+            
+            _discoveredServers.Clear();
+            var servers = await _discoveryService.DiscoverServersAsync();
+            
+            if (servers.Count == 0)
+            {
+                MessageBox.Show("No servers found on the network. Make sure servers are running and not blocked by firewall.", 
+                    "No Servers Found", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("ClientUI", $"Failed to discover servers: {ex.Message}");
+            MessageBox.Show($"Failed to discover servers: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        finally
+        {
+            DiscoverServersButton.IsEnabled = true;
+            DiscoverServersButton.Content = "Discover Servers";
+        }
+    }
+
+    private void DiscoveredServersComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        if (DiscoveredServersComboBox.SelectedItem is DiscoveredServer server)
+        {
+            ServerAddressTextBox.Text = server.IpAddress;
+            PortTextBox.Text = server.Port.ToString();
+            _logger.Info("ClientUI", $"Selected discovered server: {server.ServerName} at {server.IpAddress}:{server.Port}");
+        }
+    }
+
 
 
     private void LanguageMenuItem_Click(object sender, RoutedEventArgs e)
@@ -476,6 +539,7 @@ public partial class MainWindow : Window
         LocalizationService.Instance.LanguageChanged -= OnLanguageChanged;
         
         _taskbarNotification?.Dispose();
+        _discoveryService?.Dispose();
         _networkService?.Dispose();
         base.OnClosed(e);
     }
