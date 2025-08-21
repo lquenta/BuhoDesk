@@ -174,19 +174,7 @@
 
         <!-- Connected Clients List -->
         <GroupBox Header="Connected Clients" Grid.Row="3" Style="{StaticResource ModernGroupBox}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <ListBox x:Name="ClientsListBox" Grid.Row="0" Margin="5"/>
-                <Button x:Name="TestNotificationButton" 
-                        Grid.Row="1" 
-                        Content="Test Taskbar Notification" 
-                        Style="{StaticResource ModernButton}"
-                        Margin="5"
-                        Click="TestNotificationButton_Click"/>
-            </Grid>
+            <ListBox x:Name="ClientsListBox" Margin="5"/>
         </GroupBox>
 
         <!-- Chat Section -->
