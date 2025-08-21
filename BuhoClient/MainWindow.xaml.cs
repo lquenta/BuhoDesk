@@ -64,7 +64,7 @@ public partial class MainWindow : Window
         UpdateLocalizedStrings();
     }
 
-    private void ConnectButton_Click(object sender, RoutedEventArgs e)
+    private async void ConnectButton_Click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -81,7 +81,7 @@ public partial class MainWindow : Window
                 return;
             }
 
-            _networkService.ConnectAsync(serverAddress, port);
+            await _networkService.ConnectAsync(serverAddress, port);
             
             ConnectButton.IsEnabled = false;
             DisconnectButton.IsEnabled = true;
