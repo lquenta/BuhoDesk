@@ -193,6 +193,13 @@
                                     Background="#4CAF50"
                                     Margin="10,0,0,0"
                                     Click="LogsButton_Click"/>
+                            
+                            <Button x:Name="TestNotificationButton" 
+                                    Content="Test Notification" 
+                                    Style="{StaticResource ModernButton}"
+                                    Background="#FF9800"
+                                    Margin="10,0,0,0"
+                                    Click="TestNotificationButton_Click"/>
                         </StackPanel>
                     </Grid>
                 </StackPanel>

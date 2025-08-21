@@ -122,6 +122,7 @@ public partial class MainWindow : Window
                 // Alert user when successfully connected
                 if (!IsActive)
                 {
+                    _logger.Info("ClientUI", "Triggering taskbar notification for successful connection");
                     _taskbarNotification.AlertUser(2, 200); // Quick flash to indicate success
                 }
             }
@@ -134,6 +135,7 @@ public partial class MainWindow : Window
                 // Alert user when disconnected
                 if (!IsActive)
                 {
+                    _logger.Info("ClientUI", "Triggering taskbar notification for disconnection");
                     _taskbarNotification.AlertUser(3, 300); // Flash to indicate disconnection
                 }
             }
@@ -240,6 +242,7 @@ public partial class MainWindow : Window
             // Alert user with taskbar flash if window is not active
             if (!IsActive)
             {
+                _logger.Info("ClientUI", "Triggering taskbar notification for chat message");
                 _taskbarNotification.AlertUser(5, 300); // Flash 5 times, every 300ms
                 _logger.Info("ClientUI", $"Chat message received from {chatMessage.SenderName}: {chatMessage.Message}");
             }
@@ -442,6 +445,12 @@ public partial class MainWindow : Window
     {
         var logWindow = new LogWindow(_logger);
         logWindow.Show();
+    }
+
+    private void TestNotificationButton_Click(object sender, RoutedEventArgs e)
+    {
+        _logger.Info("ClientUI", "Manual test of taskbar notification");
+        _taskbarNotification.AlertUser(5, 200); // Flash 5 times, every 200ms
     }
 
     private void LanguageMenuItem_Click(object sender, RoutedEventArgs e)

@@ -114,6 +114,7 @@ public partial class MainWindow : Window
             // Alert user with taskbar flash for new client connection
             if (!IsActive)
             {
+                _logger.Info("ServerUI", "Triggering taskbar notification for new client connection");
                 _taskbarNotification.AlertUser(3, 400); // Flash 3 times, every 400ms
             }
         });
@@ -159,6 +160,7 @@ public partial class MainWindow : Window
             // Alert user with taskbar flash if window is not active
             if (!IsActive)
             {
+                _logger.Info("ServerUI", "Triggering taskbar notification for chat message");
                 _taskbarNotification.AlertUser(5, 300); // Flash 5 times, every 300ms
                 _logger.Info("ServerUI", $"Chat message received from {chatMessage.SenderName}: {chatMessage.Message}");
             }
@@ -247,6 +249,12 @@ public partial class MainWindow : Window
             loc.GetString("About"),
             MessageBoxButton.OK,
             MessageBoxImage.Information);
+    }
+
+    private void TestNotificationButton_Click(object sender, RoutedEventArgs e)
+    {
+        _logger.Info("ServerUI", "Manual test of taskbar notification");
+        _taskbarNotification.AlertUser(5, 200); // Flash 5 times, every 200ms
     }
 
     protected override void OnClosed(EventArgs e)

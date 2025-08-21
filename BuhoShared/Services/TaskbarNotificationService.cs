@@ -63,8 +63,18 @@ public class TaskbarNotificationService
             _flashCount = 0;
             
             // Ensure window is not flashing when stopped
-            var handle = new System.Windows.Interop.WindowInteropHelper(_window).Handle;
-            FlashWindow(handle, false);
+            try
+            {
+                var handle = new System.Windows.Interop.WindowInteropHelper(_window).Handle;
+                if (handle != IntPtr.Zero)
+                {
+                    FlashWindow(handle, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"TaskbarNotificationService StopFlashing error: {ex.Message}");
+            }
         }
     }
 
@@ -103,9 +113,26 @@ public class TaskbarNotificationService
             return;
         }
 
-        var handle = new System.Windows.Interop.WindowInteropHelper(_window).Handle;
-        FlashWindow(handle, true);
-        _flashCount++;
+        try
+        {
+            var handle = new System.Windows.Interop.WindowInteropHelper(_window).Handle;
+            if (handle != IntPtr.Zero)
+            {
+                FlashWindow(handle, true);
+                _flashCount++;
+            }
+            else
+            {
+                // Window handle not available yet, stop flashing
+                StopFlashing();
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log error and stop flashing
+            System.Diagnostics.Debug.WriteLine($"TaskbarNotificationService error: {ex.Message}");
+            StopFlashing();
+        }
     }
 
     /// <summary>
