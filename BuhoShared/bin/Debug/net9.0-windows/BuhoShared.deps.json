@@ -12,6 +12,11 @@
         },
         "runtime": {
           "BuhoShared.dll": {}
+        },
+        "resources": {
+          "es/BuhoShared.resources.dll": {
+            "locale": "es"
+          }
         }
       },
       "Microsoft.Win32.SystemEvents/9.0.8": {},

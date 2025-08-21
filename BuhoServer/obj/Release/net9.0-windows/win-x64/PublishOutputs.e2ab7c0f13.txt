@@ -1,0 +1,8 @@
+C:\Users\lquenta\Desktop\AnyDeskClone\BuhoDesk-Installer\Server\BuhoServer.pdb
+C:\Users\lquenta\Desktop\AnyDeskClone\BuhoDesk-Installer\Server\D3DCompiler_47_cor3.dll
+C:\Users\lquenta\Desktop\AnyDeskClone\BuhoDesk-Installer\Server\PenImc_cor3.dll
+C:\Users\lquenta\Desktop\AnyDeskClone\BuhoDesk-Installer\Server\PresentationNative_cor3.dll
+C:\Users\lquenta\Desktop\AnyDeskClone\BuhoDesk-Installer\Server\vcruntime140_cor3.dll
+C:\Users\lquenta\Desktop\AnyDeskClone\BuhoDesk-Installer\Server\wpfgfx_cor3.dll
+C:\Users\lquenta\Desktop\AnyDeskClone\BuhoDesk-Installer\Server\BuhoShared.pdb
+C:\Users\lquenta\Desktop\AnyDeskClone\BuhoDesk-Installer\Server\BuhoServer.exe

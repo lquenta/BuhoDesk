@@ -24,3 +24,4 @@ C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\refint
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\BuhoClient.pdb
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\BuhoClient.genruntimeconfig.cache
 C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\obj\Debug\net9.0-windows\ref\BuhoClient.dll
+C:\Users\lquenta\Desktop\AnyDeskClone\BuhoClient\bin\Debug\net9.0-windows\es\BuhoShared.resources.dll

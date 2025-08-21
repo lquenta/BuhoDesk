@@ -46,8 +46,12 @@ public partial class MainWindow : Window
             _udpScreenService.ClientDisconnected += OnUdpClientDisconnected;
             _screenService.FrameCaptured += OnFrameCaptured;
             
+            // Subscribe to language changes
+            LocalizationService.Instance.LanguageChanged += OnLanguageChanged;
+            
             _logger.Info("ServerUI", "Buho Server application started");
             UpdateServerInfo();
+            UpdateLocalizedStrings();
         }
         catch (Exception ex)
         {
@@ -178,10 +182,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void UpdateConnectionCount()
-    {
-        ConnectionCount.Text = $"{_connectedClients.Count} Connected";
-    }
+
 
     private void UpdateServerInfo()
     {
@@ -209,10 +210,75 @@ public partial class MainWindow : Window
         logWindow.Show();
     }
 
+    private void LanguageMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var languageWindow = new BuhoShared.Windows.LanguageSelectionWindow();
+        if (languageWindow.ShowDialog() == true)
+        {
+            LocalizationService.Instance.SetLanguage(languageWindow.SelectedLanguage);
+        }
+    }
+
+    private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var loc = LocalizationService.Instance;
+        MessageBox.Show(
+            $"BuhoDesk Server\nVersion 1.0\n\n{loc.GetString("About")}",
+            loc.GetString("About"),
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
+    }
+
     protected override void OnClosed(EventArgs e)
     {
+        // Unsubscribe from language changes
+        LocalizationService.Instance.LanguageChanged -= OnLanguageChanged;
+        
         _networkService?.Dispose();
         _screenService?.Dispose();
         base.OnClosed(e);
+    }
+
+    private void OnLanguageChanged(object? sender, EventArgs e)
+    {
+        Dispatcher.Invoke(UpdateLocalizedStrings);
+    }
+
+    private void UpdateLocalizedStrings()
+    {
+        var loc = LocalizationService.Instance;
+        
+        // Update window title
+        Title = loc.GetString("ServerTitle");
+        
+        // Update status text
+        if (StatusText.Text.Contains("Running"))
+        {
+            StatusText.Text = loc.GetString("ServerStatusRunning");
+        }
+        else
+        {
+            StatusText.Text = loc.GetString("ServerStatusStopped");
+        }
+        
+        // Update button texts
+        StartButton.Content = loc.GetString("StartServer");
+        StopButton.Content = loc.GetString("StopServer");
+        LogsButton.Content = loc.GetString("ViewLogs");
+        SendChatButton.Content = loc.GetString("Send");
+        
+        // Update connection count
+        UpdateConnectionCount();
+    }
+
+    private void UpdateConnectionCount()
+    {
+        var loc = LocalizationService.Instance;
+        ConnectionCount.Text = loc.GetString("ConnectedClientsCount", _connectedClients.Count);
     }
 }

@@ -39,6 +39,9 @@ public partial class MainWindow : Window
         _networkService.ChatMessageReceived += OnChatMessageReceived;
         _udpScreenService.FrameReceived += OnUdpFrameReceived;
         
+        // Subscribe to language changes
+        LocalizationService.Instance.LanguageChanged += OnLanguageChanged;
+        
         // Set up chat UI
         ChatMessagesListBox.ItemsSource = _chatMessages;
         
@@ -48,6 +51,7 @@ public partial class MainWindow : Window
         RemoteDesktopImage.KeyUp += RemoteDesktopImage_KeyUp;
         
         _logger.Info("ClientUI", "Buho Client application started");
+        UpdateLocalizedStrings();
     }
 
     private void ConnectButton_Click(object sender, RoutedEventArgs e)
@@ -419,10 +423,78 @@ public partial class MainWindow : Window
         logWindow.Show();
     }
 
+    private void LanguageMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var languageWindow = new BuhoShared.Windows.LanguageSelectionWindow();
+        if (languageWindow.ShowDialog() == true)
+        {
+            LocalizationService.Instance.SetLanguage(languageWindow.SelectedLanguage);
+        }
+    }
+
+    private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var loc = LocalizationService.Instance;
+        MessageBox.Show(
+            $"BuhoDesk Client\nVersion 1.0\n\n{loc.GetString("About")}",
+            loc.GetString("About"),
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
+    }
+
     protected override void OnClosed(EventArgs e)
     {
+        // Unsubscribe from language changes
+        LocalizationService.Instance.LanguageChanged -= OnLanguageChanged;
+        
         _networkService?.Dispose();
         base.OnClosed(e);
+    }
+
+    private void OnLanguageChanged(object? sender, EventArgs e)
+    {
+        Dispatcher.Invoke(UpdateLocalizedStrings);
+    }
+
+    private void UpdateLocalizedStrings()
+    {
+        var loc = LocalizationService.Instance;
+        
+        // Update window title
+        Title = loc.GetString("ClientTitle");
+        
+        // Update button texts
+        ConnectButton.Content = loc.GetString("Connect");
+        DisconnectButton.Content = loc.GetString("Disconnect");
+        LogsButton.Content = loc.GetString("ViewLogs");
+        SendChatButton.Content = loc.GetString("Send");
+        
+        // Update status texts
+        if (ConnectionStatusText.Text.Contains("Connected"))
+        {
+            ConnectionStatusText.Text = loc.GetString("Connected");
+        }
+        else if (ConnectionStatusText.Text.Contains("Connecting"))
+        {
+            ConnectionStatusText.Text = loc.GetString("Connecting");
+        }
+        else if (ConnectionStatusText.Text.Contains("Disconnected"))
+        {
+            ConnectionStatusText.Text = loc.GetString("Disconnected");
+        }
+        else if (ConnectionStatusText.Text.Contains("Failed"))
+        {
+            ConnectionStatusText.Text = loc.GetString("ConnectionFailed");
+        }
+        else
+        {
+            ConnectionStatusText.Text = loc.GetString("NoConnection");
+        }
     }
 
     [System.Runtime.InteropServices.DllImport("gdi32.dll")]
