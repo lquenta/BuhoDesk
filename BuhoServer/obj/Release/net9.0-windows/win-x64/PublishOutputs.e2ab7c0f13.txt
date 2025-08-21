@@ -1,2 +1,0 @@
-C:\Users\lquenta\Desktop\AnyDeskClone\BuhoDesk-Installer\Server\BuhoShared.pdb
-C:\Users\lquenta\Desktop\AnyDeskClone\BuhoDesk-Installer\Server\BuhoServer.exe

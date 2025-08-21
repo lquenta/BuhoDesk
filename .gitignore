@@ -1,0 +1,55 @@
+# Build outputs
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.r2r.dll
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.cache
+*.log
+
+# NuGet packages
+packages/
+*.nupkg
+
+# Test results
+TestResults/
+*.trx
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.sln.docstates
+
+# Logs
+Logs/
+*.log
+
+# Large installer files (keep only optimized ones)
+Output/*.exe
+!Output/BuhoDesk-Setup-v*-optimized.exe
+
+# Self-contained builds (large files)
+BuhoDesk-Installer/**/*.exe
+!BuhoDesk-Installer/**/BuhoServer.exe
+!BuhoDesk-Installer/**/BuhoClient.exe
