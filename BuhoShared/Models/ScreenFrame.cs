@@ -85,3 +85,12 @@ public class UdpFrameChunk
     public int TotalChunks { get; set; }
     public byte[] Data { get; set; } = Array.Empty<byte>();
 }
+
+public class ChatMessage
+{
+    public string SenderId { get; set; } = string.Empty;
+    public string SenderName { get; set; } = string.Empty;
+    public string Message { get; set; } = string.Empty;
+    public DateTime Timestamp { get; set; }
+    public bool IsFromServer { get; set; }
+}

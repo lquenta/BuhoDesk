@@ -58,12 +58,3 @@ public class ConnectionResponse
     public string Message { get; set; } = string.Empty;
     public string ServerId { get; set; } = string.Empty;
 }
-
-public class ChatMessage
-{
-    public string SenderId { get; set; } = string.Empty;
-    public string SenderName { get; set; } = string.Empty;
-    public string Message { get; set; } = string.Empty;
-    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
-    public bool IsFromServer { get; set; } = false;
-}
