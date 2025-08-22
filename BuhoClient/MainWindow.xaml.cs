@@ -29,15 +29,30 @@ public partial class MainWindow : Window
 
     public MainWindow()
     {
-        InitializeComponent();
-        
-        _logger = new Logger();
-        _networkService = new NetworkClientService(_logger);
-        _udpScreenService = new UdpScreenClientService(_logger, _networkService.ClientId);
-        _discoveryService = new NetworkDiscoveryService(_logger);
-        _taskbarNotification = new TaskbarNotificationService(this);
-        _chatMessages = new ObservableCollection<ChatMessage>();
-        _discoveredServers = new ObservableCollection<DiscoveredServer>();
+        try
+        {
+            Console.WriteLine("Initializing MainWindow...");
+            InitializeComponent();
+            Console.WriteLine("Component initialization completed");
+            
+            _logger = new Logger();
+            Console.WriteLine("Logger created");
+            
+            _networkService = new NetworkClientService(_logger);
+            Console.WriteLine("Network service created");
+            
+            _udpScreenService = new UdpScreenClientService(_logger, _networkService.ClientId);
+            Console.WriteLine("UDP screen service created");
+            
+            _discoveryService = new NetworkDiscoveryService(_logger);
+            Console.WriteLine("Discovery service created");
+            
+            _taskbarNotification = new TaskbarNotificationService(this);
+            Console.WriteLine("Taskbar notification service created");
+            
+            _chatMessages = new ObservableCollection<ChatMessage>();
+            _discoveredServers = new ObservableCollection<DiscoveredServer>();
+            Console.WriteLine("Collections created");
         
         _networkService.ConnectionStatusChanged += OnConnectionStatusChanged;
         _networkService.ConnectionResponseReceived += OnConnectionResponseReceived;
@@ -62,6 +77,15 @@ public partial class MainWindow : Window
         
         _logger.Info("ClientUI", "Buho Client application started");
         UpdateLocalizedStrings();
+        Console.WriteLine("MainWindow initialization completed successfully");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in MainWindow constructor: {ex.Message}");
+            Console.WriteLine($"Stack trace: {ex.StackTrace}");
+            MessageBox.Show($"Failed to initialize application: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            throw;
+        }
     }
 
     private async void ConnectButton_Click(object sender, RoutedEventArgs e)
@@ -506,8 +530,6 @@ public partial class MainWindow : Window
             _logger.Info("ClientUI", $"Selected discovered server: {server.ServerName} at {server.IpAddress}:{server.Port}");
         }
     }
-
-
 
     private void LanguageMenuItem_Click(object sender, RoutedEventArgs e)
     {
