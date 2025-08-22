@@ -263,17 +263,26 @@ public partial class MainWindow : Window
         {
             _logger.Info("ClientUI", $"OnServersDiscovered called with {servers.Count} servers");
             
-            _discoveredServers.Clear();
+            // Don't clear here - the discovery service already manages the list
+            // Just add any new servers that aren't already in the collection
             foreach (var server in servers)
             {
-                _discoveredServers.Add(server);
-                _logger.Info("ClientUI", $"Added server to dropdown: {server.ServerName} at {server.IpAddress}:{server.Port}");
+                // Check if server already exists
+                var existingServer = _discoveredServers.FirstOrDefault(s => 
+                    s.IpAddress == server.IpAddress && s.Port == server.Port);
+                
+                if (existingServer == null)
+                {
+                    _discoveredServers.Add(server);
+                    _logger.Info("ClientUI", $"Added new server to dropdown: {server.ServerName} at {server.IpAddress}:{server.Port}");
+                }
+                else
+                {
+                    _logger.Info("ClientUI", $"Server already in dropdown: {server.ServerName} at {server.IpAddress}:{server.Port}");
+                }
             }
             
-            if (servers.Count > 0)
-            {
-                _logger.Info("ClientUI", $"Discovered {servers.Count} servers - dropdown should now have {_discoveredServers.Count} items");
-            }
+            _logger.Info("ClientUI", $"Dropdown now has {_discoveredServers.Count} servers total");
         });
     }
 

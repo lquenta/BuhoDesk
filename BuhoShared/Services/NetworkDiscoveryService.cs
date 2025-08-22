@@ -115,17 +115,17 @@ public class NetworkDiscoveryService : IDisposable
         {
             // Bind client UDP client to listen for responses
             var clientEndPoint = new IPEndPoint(IPAddress.Any, 0); // Let OS choose available port
-            _clientUdpClient.Client.Bind(clientEndPoint);
-            _clientUdpClient.Client.ReceiveTimeout = DISCOVERY_TIMEOUT;
+            _udpClient.Client.Bind(clientEndPoint);
+            _udpClient.Client.ReceiveTimeout = DISCOVERY_TIMEOUT;
             
-            var localEndPoint = _clientUdpClient.Client.LocalEndPoint as IPEndPoint;
+            var localEndPoint = _udpClient.Client.LocalEndPoint as IPEndPoint;
             _logger.Info("NetworkDiscovery", $"Client listening for responses on port {localEndPoint?.Port ?? 0}");
             
             while (_isDiscovering)
             {
                 try
                 {
-                    var result = await _clientUdpClient.ReceiveAsync();
+                    var result = await _udpClient.ReceiveAsync();
                     var json = Encoding.UTF8.GetString(result.Buffer);
                     
                     var response = JsonSerializer.Deserialize<DiscoveryResponse>(json);
