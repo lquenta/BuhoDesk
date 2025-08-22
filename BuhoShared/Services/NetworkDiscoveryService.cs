@@ -11,6 +11,7 @@ namespace BuhoShared.Services;
 public class NetworkDiscoveryService : IDisposable
 {
     private readonly UdpClient _udpClient;
+    private readonly UdpClient _serverUdpClient; // Separate client for server listening
     private readonly ILogger _logger;
     private readonly List<DiscoveredServer> _discoveredServers;
     private readonly Timer _discoveryTimer;
@@ -28,6 +29,9 @@ public class NetworkDiscoveryService : IDisposable
         _udpClient = new UdpClient();
         _udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         _udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
+        
+        _serverUdpClient = new UdpClient();
+        _serverUdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         
         _discoveryTimer = new Timer(OnDiscoveryTimeout, null, Timeout.Infinite, Timeout.Infinite);
     }
@@ -171,7 +175,7 @@ public class NetworkDiscoveryService : IDisposable
         try
         {
             var localEndPoint = new IPEndPoint(IPAddress.Any, DISCOVERY_PORT);
-            _udpClient.Client.Bind(localEndPoint);
+            _serverUdpClient.Client.Bind(localEndPoint);
 
             _logger.Info("NetworkDiscovery", "Started listening for discovery requests");
 
@@ -179,7 +183,7 @@ public class NetworkDiscoveryService : IDisposable
             {
                 try
                 {
-                    var result = await _udpClient.ReceiveAsync();
+                    var result = await _serverUdpClient.ReceiveAsync();
                     var json = Encoding.UTF8.GetString(result.Buffer);
                     
                     var request = JsonSerializer.Deserialize<DiscoveryMessage>(json);
@@ -198,7 +202,7 @@ public class NetworkDiscoveryService : IDisposable
                         var responseJson = JsonSerializer.Serialize(response);
                         var responseData = Encoding.UTF8.GetBytes(responseJson);
                         
-                        await _udpClient.SendAsync(responseData, responseData.Length, result.RemoteEndPoint);
+                        await _serverUdpClient.SendAsync(responseData, responseData.Length, result.RemoteEndPoint);
                         
                         _logger.Info("NetworkDiscovery", $"Responded to discovery request from {result.RemoteEndPoint}");
                     }
@@ -230,6 +234,7 @@ public class NetworkDiscoveryService : IDisposable
         StopDiscovery();
         _discoveryTimer?.Dispose();
         _udpClient?.Dispose();
+        _serverUdpClient?.Dispose();
     }
 }
 

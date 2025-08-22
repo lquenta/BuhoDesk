@@ -55,20 +55,6 @@ public partial class MainWindow : Window
             
             _logger.Info("ServerUI", "Buho Server application started");
             
-            // Start discovery service to listen for client discovery requests
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    await _discoveryService.StartListeningForRequestsAsync(SERVER_PORT, "BuhoServer", "Buho Desktop Server");
-                    _logger.Info("ServerUI", "Discovery service started successfully");
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error("ServerUI", $"Failed to start discovery service: {ex.Message}");
-                }
-            });
-            
             UpdateServerInfo();
             UpdateLocalizedStrings();
         }
@@ -86,9 +72,23 @@ public partial class MainWindow : Window
             _udpScreenService.Start();
             _screenService.StartCapture();
             
+            // Start discovery service to listen for client discovery requests
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    await _discoveryService.StartListeningForRequestsAsync(SERVER_PORT, "BuhoServer", "Buho Desktop Server");
+                    _logger.Info("ServerUI", "Discovery service started successfully");
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error("ServerUI", $"Failed to start discovery service: {ex.Message}");
+                }
+            });
+            
             StartButton.IsEnabled = false;
             StopButton.IsEnabled = true;
-            StatusText.Text = "Server Status: Running (TCP + UDP)";
+            StatusText.Text = "Server Status: Running (TCP + UDP + Discovery)";
             StatusIndicator.Fill = System.Windows.Media.Brushes.Green;
             
             UpdateServerInfo();
@@ -106,6 +106,7 @@ public partial class MainWindow : Window
             _networkService.Stop();
             _udpScreenService.Stop();
             _screenService.StopCapture();
+            _discoveryService.StopDiscovery();
             
             StartButton.IsEnabled = true;
             StopButton.IsEnabled = false;
