@@ -1,5 +1,0 @@
-[33maf03081[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m clear gitignore and add installer
-[33m00159ef[m Clean up .gitignore for BuhoDesk project specificity - Remove irrelevant entries like orleans.codegen.cs and other template bloat - Keep only relevant .NET 9 WPF project exclusions - Organize sections logically for better maintainability - Reduce file size from 477 to ~200 lines while maintaining all necessary exclusions
-[33mc95a430[m[33m ([m[1;33mtag: [m[1;33mv1.0.1-optimized[m[33m)[m Optimize installer size from 80MB to 1.94MB - Update .gitignore to exclude large build artifacts - Configure projects for framework-dependent builds instead of self-contained - Add .NET 9.0 runtime requirement check in installer - Create optimized installer v1.0.1 with 97% size reduction - Update installer script with proper runtime detection
-[33m0232a1c[m readme modification and Installer update with new release
-[33m78e0e27[m Fix log file path in README.md - Correct path from AnyDeskClone to BuhoClone - Verify actual path in Logger.cs code - Update documentation to match actual implementation
