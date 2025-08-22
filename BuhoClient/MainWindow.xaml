@@ -210,8 +210,7 @@
                                   Style="{StaticResource ModernComboBox}"
                                   Margin="0,10,0,0"
                                   SelectionChanged="DiscoveredServersComboBox_SelectionChanged"
-                                  IsEditable="False"
-                                  DisplayMemberPath="ToString"/>
+                                  IsEditable="False"/>
                         
                         <StackPanel Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="4" 
                                     Orientation="Horizontal" 
