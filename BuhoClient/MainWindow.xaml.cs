@@ -261,15 +261,18 @@ public partial class MainWindow : Window
     {
         Dispatcher.Invoke(() =>
         {
+            _logger.Info("ClientUI", $"OnServersDiscovered called with {servers.Count} servers");
+            
             _discoveredServers.Clear();
             foreach (var server in servers)
             {
                 _discoveredServers.Add(server);
+                _logger.Info("ClientUI", $"Added server to dropdown: {server.ServerName} at {server.IpAddress}:{server.Port}");
             }
             
             if (servers.Count > 0)
             {
-                _logger.Info("ClientUI", $"Discovered {servers.Count} servers");
+                _logger.Info("ClientUI", $"Discovered {servers.Count} servers - dropdown should now have {_discoveredServers.Count} items");
             }
         });
     }
@@ -501,12 +504,22 @@ public partial class MainWindow : Window
             DiscoverServersButton.Content = "Discovering...";
             
             _discoveredServers.Clear();
-            var servers = await _discoveryService.DiscoverServersAsync();
             
-            if (servers.Count == 0)
+            // Start discovery - the results will come through the OnServersDiscovered event
+            await _discoveryService.DiscoverServersAsync();
+            
+            // Wait a bit for responses to come in
+            await Task.Delay(3500); // Wait slightly longer than the 3-second timeout
+            
+            // Check if any servers were found
+            if (_discoveredServers.Count == 0)
             {
                 MessageBox.Show("No servers found on the network. Make sure servers are running and not blocked by firewall.", 
                     "No Servers Found", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                _logger.Info("ClientUI", $"Discovery completed. Found {_discoveredServers.Count} servers");
             }
         }
         catch (Exception ex)
