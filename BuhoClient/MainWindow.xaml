@@ -80,6 +80,16 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
+        
+        <Style x:Key="ModernGroupBox" TargetType="GroupBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#333"/>
+        </Style>
     </Window.Resources>
     
     <Grid>
@@ -282,37 +292,21 @@
                 </Grid>
                 
                 <!-- Chat Section -->
-                <Border Grid.Column="1" 
-                        Background="#F8F9FA" 
-                        CornerRadius="10" 
-                        BorderBrush="#E0E0E0" 
-                        BorderThickness="1"
-                        MinWidth="320">
-                    <Grid Margin="12">
+                <GroupBox Header="Chat" Grid.Column="1" Style="{StaticResource ModernGroupBox}" MinWidth="320">
+                    <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         
-                        <!-- Chat Header -->
-                        <TextBlock Grid.Row="0" 
-                                   Text="Chat" 
-                                   FontSize="18" 
-                                   FontWeight="Bold" 
-                                   Margin="0,0,0,12"
-                                   Foreground="#2196F3"/>
-                        
-                        <!-- Chat Messages -->
-                        <ScrollViewer Grid.Row="1" 
-                                      VerticalScrollBarVisibility="Auto" 
-                                      Margin="0,0,0,12"
-                                      MinHeight="200">
+                        <!-- Chat Messages Display -->
+                        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" Margin="0,0,0,5">
                             <ListBox x:Name="ChatMessagesListBox" 
                                      Background="Transparent" 
                                      BorderThickness="0"
                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                     FontSize="13">
+                                     FontSize="13"
+                                     MaxHeight="300">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Margin="5">
@@ -330,7 +324,7 @@
                         </ScrollViewer>
                         
                         <!-- Chat Input -->
-                        <Grid Grid.Row="2">
+                        <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -338,26 +332,26 @@
                             
                             <TextBox x:Name="ChatInputTextBox" 
                                      Grid.Column="0" 
-                                     Margin="0,0,8,0"
-                                     KeyDown="ChatInputTextBox_KeyDown"
+                                     Margin="0,0,5,0"
                                      Style="{StaticResource ModernTextBox}"
                                      FontSize="13"
                                      Padding="10,8"
                                      MinHeight="35"
-                                     VerticalContentAlignment="Center"/>
+                                     VerticalContentAlignment="Center"
+                                     AcceptsReturn="False"
+                                     KeyDown="ChatInputTextBox_KeyDown"/>
                             <Button x:Name="SendChatButton" 
                                     Grid.Column="1" 
                                     Content="Send" 
-                                    MinWidth="80" 
+                                    Width="80" 
                                     Height="35"
                                     Style="{StaticResource ModernButton}"
                                     FontSize="13"
                                     FontWeight="SemiBold"
-                                    Padding="15,8"
                                     Click="SendChatButton_Click"/>
                         </Grid>
                     </Grid>
-                </Border>
+                </GroupBox>
             </Grid>
         </Border>
     </Grid>
