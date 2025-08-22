@@ -1,94 +1,215 @@
 # BuhoDesk
 
-A remote desktop application built with .NET 9 and WPF, featuring real-time screen sharing, remote control, and chat functionality.
+A professional remote desktop application built with .NET 9 and WPF, featuring real-time screen sharing, remote control, network discovery, and comprehensive communication tools.
 
-## Features
+## 🚀 Version 1.0.0 Release
 
-- **Real-time Screen Sharing**: View remote desktop in real-time with high performance
-- **Remote Control**: Full mouse and keyboard control of remote machine
-- **Chat System**: Built-in chat functionality for communication between client and server
-- **Multiple Client Support**: Server can handle multiple simultaneous connections
-- **UDP Screen Broadcasting**: High-performance screen frame transmission
-- **TCP Control Channel**: Reliable control and chat message transmission
-- **Modern UI**: Clean, modern WPF interface with Material Design styling
+**BuhoDesk v1.0.0** is now available with complete remote desktop functionality including mouse cursor rendering, network discovery, taskbar notifications, and multi-language support.
 
-## Chat Functionality
+### 📦 Download
+- **Installer**: `BuhoDesk-Setup-v1.0.0.exe` (2.0 MB)
+- **Requirements**: Windows 10/11, .NET 9.0 Runtime
+- **Architecture**: x64
 
-The application now includes a comprehensive chat system that allows:
+## ✨ Features
 
-- **Real-time messaging** between server and connected clients
-- **Message history** with timestamps and sender information
-- **Auto-scrolling** chat display
-- **Enter key support** for quick message sending
-- **Broadcast messaging** from server to all connected clients
-- **Individual client identification** with custom client names
+### 🖥️ Core Functionality
+- **Real-time Screen Sharing**: High-performance desktop streaming with adaptive quality
+- **Mouse Cursor Rendering**: Visible mouse pointer in remote desktop sessions
+- **Remote Control**: Full mouse and keyboard control with modifier key support
+- **Network Discovery**: Automatic server detection on local network
+- **Chat System**: Built-in messaging with real-time communication
 
-### How to Use Chat
+### 🎯 Advanced Features
+- **Taskbar Notifications**: Visual alerts for connections and messages
+- **Multi-language Support**: English and Spanish interfaces
+- **Performance Optimization**: Frame differencing and adaptive compression
+- **Firewall Integration**: Automatic port configuration
+- **Multiple Client Support**: Server handles multiple simultaneous connections
 
-1. **Server Side**: 
-   - Start the server application
-   - The chat panel appears at the bottom of the server window
-   - Type messages in the input box and press Enter or click Send
-   - Messages are broadcast to all connected clients
-
-2. **Client Side**:
-   - Connect to the server
-   - The chat panel appears on the right side of the client window
-   - Type messages in the input box and press Enter or click Send
-   - Messages are sent to the server and broadcast to all other clients
-
-## Projects
-
-- **BuhoServer**: Main server application with screen capture and input simulation
-- **BuhoClient**: Modern client application with enhanced UI
-- **BuhoShared**: Shared models and network protocols
-
-## Network Architecture
-
-- **TCP (Port 8080)**: Control channel for mouse/keyboard events and chat messages
-- **UDP (Port 8081)**: High-performance screen frame broadcasting
+### 🔧 Technical Features
+- **TCP/UDP Communication**: Reliable control + fast screen streaming
+- **Frame Differencing**: Only sends changed screen regions
+- **Adaptive Quality**: Dynamic JPEG compression based on network conditions
+- **UDP Screen Broadcasting**: High-performance frame transmission
 - **JSON Protocol**: Structured message format for all communications
 
-## Building and Running
+## 🏗️ Architecture
 
-1. Ensure you have .NET 9 SDK installed
-2. Clone the repository
-3. Run `dotnet build` to build all projects
-4. Start the server: `dotnet run --project BuhoServer`
-5. Start one or more clients: `dotnet run --project BuhoClient`
+### Network Protocol
+- **TCP (Port 8080)**: Control channel for mouse/keyboard events and chat messages
+- **UDP (Port 8081)**: High-performance screen frame broadcasting
+- **UDP (Port 8082)**: Network discovery service
 
-## Usage
+### Projects Structure
+- **BuhoServer**: Main server application with screen capture and input simulation
+- **BuhoClient**: Modern client application with enhanced UI and discovery
+- **BuhoShared**: Shared models, network protocols, and services
 
-1. **Start the Server**:
-   - Launch BuhoServer
-   - Click "Start Server"
-   - Note the IP address and port displayed
+## 🎮 How to Use
 
-2. **Connect Clients**:
-   - Launch BuhoClient
-   - Enter the server's IP address and port (default: 8080)
-   - Set a custom client name (optional)
-   - Click "Connect"
+### 1. Installation
+1. Download and run `BuhoDesk-Setup-v1.0.0.exe`
+2. Follow the installation wizard
+3. Allow firewall rules when prompted
 
-3. **Use Chat**:
-   - Once connected, use the chat panel to send messages
-   - Messages are displayed with sender name and timestamp
-   - Press Enter to send messages quickly
+### 2. Starting the Server
+1. Launch **BuhoServer** from Start Menu or Desktop
+2. Click **"Start Server"**
+3. Server will start listening on ports 8080 (TCP), 8081 (UDP), and 8082 (Discovery)
+4. Note the status indicator turns green when running
 
-4. **Remote Control**:
-   - Click and drag on the remote desktop image to control the remote machine
-   - Use keyboard input when the remote desktop image has focus
+### 3. Connecting Clients
+#### Option A: Network Discovery (Recommended)
+1. Launch **BuhoClient**
+2. Click **"Discover Servers"**
+3. Select a server from the dropdown list
+4. Click **"Connect"**
 
-## Technical Details
+#### Option B: Manual Connection
+1. Launch **BuhoClient**
+2. Enter server IP address manually
+3. Set port (default: 8080)
+4. Click **"Connect"**
 
-- **Screen Capture**: Uses Windows Graphics Capture API for high-performance screen recording
-- **Input Simulation**: Windows Input Simulation for remote control
-- **Network Protocol**: Custom JSON-based protocol over TCP/UDP
-- **UI Framework**: WPF with modern styling and responsive design
-- **Logging**: Comprehensive logging system for debugging and monitoring
+### 4. Remote Control
+- **Mouse Control**: Click and drag on remote desktop image
+- **Keyboard Input**: Type when remote desktop has focus
+- **Mouse Cursor**: Visible pointer shows current position
+- **Modifier Keys**: Ctrl, Alt, Shift combinations work
 
-## Requirements
+### 5. Chat Communication
+- **Send Messages**: Type in chat input box and press Enter
+- **Real-time**: Messages appear instantly with timestamps
+- **Notifications**: Taskbar flashes for new messages
 
-- Windows 10/11
-- .NET 9 Runtime
-- Administrative privileges (for screen capture and input simulation)
+## 🔧 Technical Details
+
+### Screen Capture Technology
+- **Win32 API Integration**: Direct screen capture using `BitBlt` and `StretchBlt`
+- **Mouse Cursor Rendering**: `GetCursorInfo` and `DrawIcon` for cursor display
+- **Performance Optimization**: Configurable capture frequency and resolution
+- **Frame Differencing**: Intelligent change detection to reduce bandwidth
+
+### Input Simulation
+- **Mouse Events**: Movement, clicks, scrolling with proper scaling
+- **Keyboard Events**: Full key support including modifier combinations
+- **Win32 API**: Direct input simulation using `mouse_event` and `keybd_event`
+
+### Network Services
+- **NetworkDiscoveryService**: UDP broadcast for automatic server discovery
+- **TaskbarNotificationService**: Visual alerts using `FlashWindow`
+- **LocalizationService**: Multi-language support with .resx files
+
+### Performance Features
+- **Adaptive Quality**: Dynamic JPEG compression (40-60 quality range)
+- **Frame Skipping**: Intelligent frame differencing to reduce CPU usage
+- **UDP Chunking**: Efficient screen frame transmission in chunks
+- **Background Processing**: Non-blocking operations for responsive UI
+
+## 📋 Requirements
+
+### System Requirements
+- **OS**: Windows 10/11 (x64)
+- **Runtime**: .NET 9.0 Runtime
+- **Privileges**: Administrative (for screen capture and input simulation)
+- **Network**: Local network access for discovery and communication
+
+### Development Requirements
+- **SDK**: .NET 9.0 SDK
+- **IDE**: Visual Studio 2022 or VS Code
+- **Tools**: Inno Setup 6 (for installer creation)
+
+## 🛠️ Building from Source
+
+### Prerequisites
+```bash
+# Install .NET 9.0 SDK
+# Clone the repository
+git clone https://github.com/your-repo/buhodesk.git
+cd buhodesk
+```
+
+### Build Commands
+```bash
+# Build all projects
+dotnet build BuhoDesk.sln
+
+# Build specific projects
+dotnet build BuhoServer/BuhoServer.csproj
+dotnet build BuhoClient/BuhoClient.csproj
+dotnet build BuhoShared/BuhoShared.csproj
+
+# Run applications
+dotnet run --project BuhoServer/BuhoServer.csproj
+dotnet run --project BuhoClient/BuhoClient.csproj
+```
+
+### Creating Installer
+```bash
+# Build release version
+dotnet build BuhoDesk.sln --configuration Release
+
+# Create installer (requires Inno Setup 6)
+& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "BuhoDesk-Setup.iss"
+```
+
+## 🔒 Security & Privacy
+
+### Network Security
+- **Local Network Only**: Designed for trusted local network environments
+- **No Internet Access**: All communication stays within local network
+- **Firewall Integration**: Automatic port configuration for security
+
+### Data Handling
+- **No Data Storage**: Screen captures are not saved to disk
+- **Memory Only**: All processing happens in memory
+- **No Logging**: No sensitive data is logged or transmitted
+
+## 🐛 Troubleshooting
+
+### Common Issues
+1. **Connection Failed**: Check firewall settings and ensure server is running
+2. **No Servers Found**: Verify network discovery is enabled and servers are running
+3. **Mouse Not Visible**: Ensure you're using v1.0.0+ for cursor rendering
+4. **Performance Issues**: Adjust capture frequency in server settings
+
+### Logs and Debugging
+- **Log Files**: Located in `C:\Users\[username]\Desktop\AnyDeskClone\Logs\`
+- **Log Viewer**: Available in both server and client applications
+- **Performance Monitor**: Built-in metrics for optimization
+
+## 📝 Changelog
+
+### v1.0.0 (Current Release)
+- ✅ **Mouse Cursor Rendering**: Visible mouse pointer in remote sessions
+- ✅ **Network Discovery**: Automatic server detection on local network
+- ✅ **Taskbar Notifications**: Visual alerts for connections and messages
+- ✅ **Multi-language Support**: English and Spanish interfaces
+- ✅ **UI Improvements**: Responsive chat interface and language selection
+- ✅ **Performance Optimizations**: Reduced CPU usage and improved FPS
+- ✅ **Installer**: Professional Windows installer with firewall integration
+
+### Previous Versions
+- **v0.9.0**: Initial release with basic remote desktop functionality
+- **v0.8.0**: Added chat system and performance improvements
+- **v0.7.0**: UDP screen streaming and frame differencing
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our contributing guidelines for details.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+For support and questions:
+- **Issues**: Create an issue on GitHub
+- **Documentation**: Check the built-in help and logs
+- **Community**: Join our community discussions
+
+---
+
+**BuhoDesk** - Professional remote desktop solution for Windows
