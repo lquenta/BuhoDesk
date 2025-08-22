@@ -2,7 +2,7 @@
 ; This creates a professional Windows installer
 
 #define MyAppName "BuhoDesk"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "BuhoDesk Team"
 #define MyAppURL "https://github.com/your-repo/buhodesk"
 #define MyAppExeName "BuhoServer.exe"
@@ -24,7 +24,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=LICENSE.txt
 OutputDir=Output
-OutputBaseFilename=BuhoDesk-Setup-v{#MyAppVersion}
+OutputBaseFilename=BuhoDesk-Setup-v{#MyAppVersion}-optimized
 
 Compression=lzma
 SolidCompression=yes
@@ -80,10 +80,22 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\F
 
 [Code]
 function InitializeSetup(): Boolean;
+var
+  ResultCode: Integer;
 begin
   Result := True;
-  // Check if .NET 9.0 is installed (for non-self-contained version)
-  // For self-contained, this check is not needed
+  
+  // Check if .NET 9.0 Desktop Runtime is installed
+  if not Exec('dotnet', '--list-runtimes', '', SW_HIDE, ewWaitUntilTerminated, ResultCode) then
+  begin
+    if MsgBox('This application requires .NET 9.0 Desktop Runtime to run. Would you like to download it now?', 
+              mbConfirmation, MB_YESNO) = IDYES then
+    begin
+      // Open .NET download page
+      ShellExec('open', 'https://dotnet.microsoft.com/download/dotnet/9.0', '', '', SW_SHOWNORMAL, ewNoWait, ResultCode);
+    end;
+    Result := False;
+  end;
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);

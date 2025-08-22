@@ -407,8 +407,27 @@ FodyWeavers.xsd
 
 # Installer build artifacts
 BuhoDesk-Installer/
-Output/*.exe
+Installer/
+Output/
 !Output/BuhoDesk-Setup-v*-optimized.exe
+
+# Large self-contained executables
+**/win-x64/
+**/R2R/
+*.r2r.dll
+
+# Large build artifacts
+*.r2r.dll
+*.dll
+*.exe
+*.pdb
+*.deps.json
+*.runtimeconfig.json
+*.runtimeconfig.dev.json
+
+# Publish outputs
+publish/
+**/publish/
 
 # Log files
 Logs/
