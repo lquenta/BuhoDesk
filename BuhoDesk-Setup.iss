@@ -48,15 +48,15 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 ; Server files
-Source: "BuhoDesk-Installer\Server\BuhoServer.exe"; DestDir: "{app}\Server"; Flags: ignoreversion
-Source: "BuhoDesk-Installer\Server\*"; DestDir: "{app}\Server"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "Installer\BuhoServer.exe"; DestDir: "{app}\Server"; Flags: ignoreversion
+Source: "Installer\*"; DestDir: "{app}\Server"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; Client files
-Source: "BuhoDesk-Installer\Client\BuhoClient.exe"; DestDir: "{app}\Client"; Flags: ignoreversion
-Source: "BuhoDesk-Installer\Client\*"; DestDir: "{app}\Client"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "Installer\BuhoClient.exe"; DestDir: "{app}\Client"; Flags: ignoreversion
+Source: "Installer\*"; DestDir: "{app}\Client"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 ; Documentation
-Source: "BuhoDesk-Installer\README.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "README.md"; DestDir: "{app}"; Flags: ignoreversion
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
