@@ -236,4 +236,25 @@ For support and questions:
 
 ---
 
+## 👨‍💻 Author
+
+**BuhoDesk** is proudly created by **Leonardo Quenta Alarcón**, a passionate developer from **La Paz, Bolivia** 🇧🇴.
+
+### 🏔️ High Altitude Development
+
+As a **proud high-altitude developer** with an even higher attitude, I bring a unique perspective to software development from the heart of the Andes Mountains. Working at 3,650 meters above sea level (11,975 feet) in one of the world's highest capital cities, I've learned that great software can be built anywhere - even where the air is thin but the ideas are bold! 😄
+
+### 🌟 Why This Matters
+
+- **Global Perspective**: Software development knows no geographical boundaries
+- **Innovation from Unlikely Places**: Great ideas can come from anywhere in the world
+- **Community Building**: Open source connects developers across continents
+- **Cultural Diversity**: Different perspectives lead to better solutions
+
+### 🤝 Connect
+
+Feel free to reach out and connect with a developer who literally has his head in the clouds! ☁️
+
+---
+
 **BuhoDesk** - Professional remote desktop solution for Windows
