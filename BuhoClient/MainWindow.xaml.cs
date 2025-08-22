@@ -283,6 +283,16 @@ public partial class MainWindow : Window
             }
             
             _logger.Info("ClientUI", $"Dropdown now has {_discoveredServers.Count} servers total");
+            
+            // Force UI refresh
+            DiscoveredServersComboBox.Items.Refresh();
+            
+            // Log the actual items in the ComboBox
+            _logger.Info("ClientUI", $"ComboBox Items.Count: {DiscoveredServersComboBox.Items.Count}");
+            foreach (var item in DiscoveredServersComboBox.Items)
+            {
+                _logger.Info("ClientUI", $"ComboBox item: {item}");
+            }
         });
     }
 
