@@ -199,7 +199,7 @@ dotnet build BuhoDesk.sln --configuration Release
 4. **Performance Issues**: Adjust capture frequency in server settings
 
 ### Logs and Debugging
-- **Log Files**: Located in `C:\Users\[username]\Desktop\AnyDeskClone\Logs\`
+- **Log Files**: Located in `C:\Users\[username]\Desktop\BuhoClone\Logs\`
 - **Log Viewer**: Available in both server and client applications
 - **Performance Monitor**: Built-in metrics for optimization
 
