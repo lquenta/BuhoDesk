@@ -167,6 +167,9 @@ public class ScreenCaptureService : IDisposable
                 var hdcBitmap = graphics.GetHdc();
                 BitBlt(hdcBitmap, 0, 0, scaledWidth, scaledHeight, hdcMemory, 0, 0, SRCCOPY);
                 graphics.ReleaseHdc(hdcBitmap);
+                
+                // Draw mouse cursor on top of the captured screen
+                DrawMouseCursor(graphics, scale);
             }
 
             SelectObject(hdcMemory, hOldBitmap);
@@ -305,6 +308,34 @@ public class ScreenCaptureService : IDisposable
         _captureTimer?.Dispose();
     }
 
+    private void DrawMouseCursor(Graphics graphics, double scale)
+    {
+        try
+        {
+            var cursorInfo = new CURSORINFO();
+            cursorInfo.cbSize = Marshal.SizeOf(cursorInfo);
+            
+            if (GetCursorInfo(ref cursorInfo) && (cursorInfo.flags & CURSOR_SHOWING) != 0)
+            {
+                GetCursorPos(out var cursorPos);
+                
+                // Scale cursor position to match the captured image
+                var scaledX = (int)(cursorPos.X * scale);
+                var scaledY = (int)(cursorPos.Y * scale);
+                
+                // Draw the cursor icon
+                var hdc = graphics.GetHdc();
+                DrawIcon(hdc, scaledX, scaledY, cursorInfo.hCursor);
+                graphics.ReleaseHdc(hdc);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Don't log cursor drawing errors as they're not critical
+            // _logger.Warning("ScreenCapture", $"Failed to draw mouse cursor: {ex.Message}");
+        }
+    }
+
     #region Win32 API
 
     [DllImport("user32.dll")]
@@ -343,9 +374,42 @@ public class ScreenCaptureService : IDisposable
     [DllImport("user32.dll")]
     private static extern int GetSystemMetrics(int nIndex);
 
+    [DllImport("user32.dll")]
+    private static extern bool GetCursorInfo(ref CURSORINFO pci);
+
+    [DllImport("user32.dll")]
+    private static extern bool DrawIcon(IntPtr hDC, int X, int Y, IntPtr hIcon);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetCursor();
+
+    [DllImport("user32.dll")]
+    private static extern bool GetCursorPos(out POINT lpPoint);
+
     private const uint SRCCOPY = 0x00CC0020;
     private const int HALFTONE = 4;
     private const int COLORONCOLOR = 3; // Added for fast scaling
+    private const int CURSOR_SHOWING = 0x00000001;
+
+    #endregion
+
+    #region Win32 Structs
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct CURSORINFO
+    {
+        public int cbSize;
+        public int flags;
+        public IntPtr hCursor;
+        public POINT ptScreenPos;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct POINT
+    {
+        public int X;
+        public int Y;
+    }
 
     #endregion
 }
