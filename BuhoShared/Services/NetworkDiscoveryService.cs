@@ -12,6 +12,7 @@ public class NetworkDiscoveryService : IDisposable
 {
     private readonly UdpClient _udpClient;
     private readonly UdpClient _serverUdpClient; // Separate client for server listening
+    private readonly UdpClient _clientUdpClient; // Separate client for client listening
     private readonly ILogger _logger;
     private readonly List<DiscoveredServer> _discoveredServers;
     private readonly Timer _discoveryTimer;
@@ -32,6 +33,9 @@ public class NetworkDiscoveryService : IDisposable
         
         _serverUdpClient = new UdpClient();
         _serverUdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+        
+        _clientUdpClient = new UdpClient();
+        _clientUdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         
         _discoveryTimer = new Timer(OnDiscoveryTimeout, null, Timeout.Infinite, Timeout.Infinite);
     }
@@ -109,13 +113,19 @@ public class NetworkDiscoveryService : IDisposable
     {
         try
         {
-            _udpClient.Client.ReceiveTimeout = DISCOVERY_TIMEOUT;
+            // Bind client UDP client to listen for responses
+            var clientEndPoint = new IPEndPoint(IPAddress.Any, 0); // Let OS choose available port
+            _clientUdpClient.Client.Bind(clientEndPoint);
+            _clientUdpClient.Client.ReceiveTimeout = DISCOVERY_TIMEOUT;
+            
+            var localEndPoint = _clientUdpClient.Client.LocalEndPoint as IPEndPoint;
+            _logger.Info("NetworkDiscovery", $"Client listening for responses on port {localEndPoint?.Port ?? 0}");
             
             while (_isDiscovering)
             {
                 try
                 {
-                    var result = await _udpClient.ReceiveAsync();
+                    var result = await _clientUdpClient.ReceiveAsync();
                     var json = Encoding.UTF8.GetString(result.Buffer);
                     
                     var response = JsonSerializer.Deserialize<DiscoveryResponse>(json);
@@ -235,6 +245,7 @@ public class NetworkDiscoveryService : IDisposable
         _discoveryTimer?.Dispose();
         _udpClient?.Dispose();
         _serverUdpClient?.Dispose();
+        _clientUdpClient?.Dispose();
     }
 }
 
