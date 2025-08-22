@@ -2,6 +2,30 @@
 
 A professional remote desktop application built with .NET 9 and WPF, featuring real-time screen sharing, remote control, network discovery, and comprehensive communication tools.
 
+## 🎯 Motivation
+
+BuhoDesk was born from the need for a **free, open-source alternative** to commercial remote desktop solutions. In today's digital landscape, many users find themselves dependent on expensive subscription-based services that often compromise privacy and data security.
+
+### Why BuhoDesk?
+
+- **🆓 Completely Free**: No subscriptions, no hidden costs, no feature limitations
+- **🔒 Privacy-First**: Your data stays on your network - no cloud storage or third-party servers
+- **🚫 No Data Mining**: Unlike commercial alternatives, we don't collect, sell, or monetize your data
+- **⚡ Self-Hosted**: Full control over your remote desktop infrastructure
+- **🛠️ Open Source**: Transparent codebase that you can inspect, modify, and contribute to
+- **🎯 Focused Functionality**: Essential remote desktop features without bloat or unnecessary complexity
+
+### The Problem with Commercial Alternatives
+
+Commercial remote desktop applications often:
+- **Lock you into expensive subscriptions** for basic functionality
+- **Collect and sell your usage data** to third parties
+- **Require internet connectivity** even for local network usage
+- **Limit features** based on subscription tiers
+- **Create vendor lock-in** with proprietary protocols
+
+BuhoDesk provides a **professional-grade solution** that puts you back in control of your remote desktop needs without compromising on privacy, cost, or functionality.
+
 ## 🚀 Version 1.0.0 Release
 
 **BuhoDesk v1.0.0** is now available with complete remote desktop functionality including mouse cursor rendering, network discovery, taskbar notifications, and multi-language support.
