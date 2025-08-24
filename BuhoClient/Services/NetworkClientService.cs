@@ -149,7 +149,7 @@ public class NetworkClientService : IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error sending chat message: {ex.Message}");
+            _logger.Error("NetworkClient", $"Error sending chat message: {ex.Message}");
         }
     }
 
@@ -157,9 +157,17 @@ public class NetworkClientService : IDisposable
     {
         if (_stream == null) return;
 
-        var messageJson = JsonSerializer.Serialize(message);
-        var messageBytes = Encoding.UTF8.GetBytes(messageJson);
-        await _stream.WriteAsync(messageBytes, 0, messageBytes.Length);
+        try
+        {
+            var messageJson = JsonSerializer.Serialize(message);
+            var messageBytes = Encoding.UTF8.GetBytes(messageJson);
+            await _stream.WriteAsync(messageBytes, 0, messageBytes.Length);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("NetworkClient", $"Error sending message: {ex.Message}");
+            throw;
+        }
     }
 
     private async Task ReceiveMessagesAsync()
@@ -167,7 +175,7 @@ public class NetworkClientService : IDisposable
         var buffer = new byte[8192];
         var messageBuffer = new StringBuilder();
 
-        while (_isConnected && _stream != null)
+        while (_stream != null && _client?.Connected == true)
         {
             try
             {
