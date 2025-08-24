@@ -87,6 +87,28 @@ public class ScreenCaptureService : IDisposable
         }
     }
 
+    /// <summary>
+    /// Captures a single screenshot and returns it as a ScreenFrame
+    /// </summary>
+    public async Task<ScreenFrame?> CaptureScreenAsync()
+    {
+        try
+        {
+            using var bitmap = CaptureDesktop();
+            if (bitmap != null)
+            {
+                return await ConvertToFrameAsync(bitmap);
+            }
+            
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("ScreenCapture", "Failed to capture single screenshot", ex);
+            return null;
+        }
+    }
+
     private void CaptureScreen(object? state)
     {
         if (!_isCapturing) return;

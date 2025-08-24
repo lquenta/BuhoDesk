@@ -19,6 +19,8 @@ public partial class MainWindow : Window
     private readonly InputSimulationService _inputService;
     private readonly TaskbarNotificationService _taskbarNotification;
     private readonly NetworkDiscoveryService _discoveryService;
+    private readonly MediaDetectionService _mediaDetectionService;
+    private readonly EventLoggingService _eventLoggingService;
     private readonly ObservableCollection<string> _connectedClients;
     private readonly ObservableCollection<ChatMessage> _chatMessages;
     private readonly ILogger _logger;
@@ -36,6 +38,8 @@ public partial class MainWindow : Window
             _networkService = new NetworkServerService(SERVER_PORT, _inputService, _screenService, _logger);
             _udpScreenService = new UdpScreenService(_logger);
             _discoveryService = new NetworkDiscoveryService(_logger);
+            _mediaDetectionService = new MediaDetectionService(_logger, _screenService);
+            _eventLoggingService = new EventLoggingService(_logger);
             _taskbarNotification = new TaskbarNotificationService(this);
             
             _connectedClients = new ObservableCollection<string>();
@@ -49,6 +53,7 @@ public partial class MainWindow : Window
             _udpScreenService.ClientConnected += OnUdpClientConnected;
             _udpScreenService.ClientDisconnected += OnUdpClientDisconnected;
             _screenService.FrameCaptured += OnFrameCaptured;
+            _mediaDetectionService.MediaDetected += OnMediaDetected;
             
             // Subscribe to language changes
             LocalizationService.Instance.LanguageChanged += OnLanguageChanged;
@@ -71,6 +76,7 @@ public partial class MainWindow : Window
             _networkService.Start();
             _udpScreenService.Start();
             _screenService.StartCapture();
+            _mediaDetectionService.StartDetection();
             
             // Start discovery service to listen for client discovery requests
             _ = Task.Run(async () =>
@@ -108,6 +114,7 @@ public partial class MainWindow : Window
             _screenService.StopCapture();
             _discoveryService.StopDiscovery();
             _discoveryService.StopDiscoveryService();
+            _mediaDetectionService.StopDetection();
             
             StartButton.IsEnabled = true;
             StopButton.IsEnabled = false;
@@ -279,12 +286,48 @@ public partial class MainWindow : Window
         _discoveryService?.Dispose();
         _networkService?.Dispose();
         _screenService?.Dispose();
+        _mediaDetectionService?.Dispose();
+        _eventLoggingService?.Dispose();
         base.OnClosed(e);
     }
 
     private void OnLanguageChanged(object? sender, EventArgs e)
     {
         Dispatcher.Invoke(UpdateLocalizedStrings);
+    }
+
+    private async void OnMediaDetected(object? sender, MediaDetectionEvent mediaEvent)
+    {
+        try
+        {
+            // Log the media detection event
+            await _eventLoggingService.LogMediaEventAsync(mediaEvent);
+            
+            // Add to chat messages for visibility
+            var chatMessage = new ChatMessage
+            {
+                SenderId = "SYSTEM",
+                SenderName = "Media Detection",
+                Message = $"🎬 Media detected: {mediaEvent.EventType} - {mediaEvent.Title}",
+                Timestamp = DateTime.UtcNow,
+                IsFromServer = true
+            };
+            
+            Dispatcher.Invoke(() =>
+            {
+                _chatMessages.Add(chatMessage);
+                ChatMessagesListBox.ScrollIntoView(chatMessage);
+            });
+            
+            // Send notification to connected clients
+            await _networkService.SendChatMessageAsync($"🎬 Media detected: {mediaEvent.EventType} - {mediaEvent.Title}", "Media Detection");
+            
+            _logger.Info("ServerUI", $"Media detection event logged: {mediaEvent.EventType} - {mediaEvent.Title}");
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("ServerUI", $"Error handling media detection event: {ex.Message}");
+        }
     }
 
     private void UpdateLocalizedStrings()

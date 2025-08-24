@@ -42,7 +42,8 @@ public enum MessageType
     ConnectionInfo,
     Heartbeat,
     Error,
-    Chat
+    Chat,
+    MediaDetection
 }
 
 public class ConnectionRequest
