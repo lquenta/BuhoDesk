@@ -19,11 +19,11 @@ public class ScreenCaptureService : IDisposable
     private int _framesSinceLastReport = 0;
     
     // Performance optimization settings
-    private const int KEY_FRAME_INTERVAL_MS = 5000; // Key frame every 5 seconds (increased)
-    private const int CAPTURE_INTERVAL_MS = 100; // 10 FPS (reduced significantly)
+    private const int KEY_FRAME_INTERVAL_MS = 5000; // Key frame every 5 seconds
+    private const int CAPTURE_INTERVAL_MS = 150; // ~6.7 FPS (optimized for performance)
     private const int FPS_REPORT_INTERVAL_MS = 10000; // Report every 10 seconds
-    private const int MAX_QUALITY = 60; // JPEG quality (reduced further)
-    private const int MIN_QUALITY = 40; // Minimum quality for fast transmission
+    private const int MAX_QUALITY = 50; // JPEG quality (optimized for performance)
+    private const int MIN_QUALITY = 30; // Minimum quality for fast transmission
     
     // Frame differencing - less aggressive
     private byte[]? _lastFrameData;

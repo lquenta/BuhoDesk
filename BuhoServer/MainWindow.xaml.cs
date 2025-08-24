@@ -107,6 +107,7 @@ public partial class MainWindow : Window
             _udpScreenService.Stop();
             _screenService.StopCapture();
             _discoveryService.StopDiscovery();
+            _discoveryService.StopDiscoveryService();
             
             StartButton.IsEnabled = true;
             StopButton.IsEnabled = false;

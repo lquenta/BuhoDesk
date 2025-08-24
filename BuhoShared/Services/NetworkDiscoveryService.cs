@@ -217,6 +217,11 @@ public class NetworkDiscoveryService : IDisposable
                         _logger.Info("NetworkDiscovery", $"Responded to discovery request from {result.RemoteEndPoint}");
                     }
                 }
+                catch (ObjectDisposedException)
+                {
+                    // Expected when server is stopping
+                    break;
+                }
                 catch (Exception ex)
                 {
                     _logger.Warning("NetworkDiscovery", $"Error processing discovery request: {ex.Message}");
@@ -239,13 +244,47 @@ public class NetworkDiscoveryService : IDisposable
         _logger.Info("NetworkDiscovery", "Discovery stopped");
     }
 
+    /// <summary>
+    /// Stops the discovery service (for servers)
+    /// </summary>
+    public void StopDiscoveryService()
+    {
+        try
+        {
+            _serverUdpClient?.Close();
+            _logger.Info("NetworkDiscovery", "Discovery service stopped");
+        }
+        catch (Exception ex)
+        {
+            _logger.Warning("NetworkDiscovery", $"Error stopping discovery service: {ex.Message}");
+        }
+    }
+
     public void Dispose()
     {
         StopDiscovery();
         _discoveryTimer?.Dispose();
-        _udpClient?.Dispose();
-        _serverUdpClient?.Dispose();
-        _clientUdpClient?.Dispose();
+        
+        try
+        {
+            _udpClient?.Close();
+            _udpClient?.Dispose();
+        }
+        catch { }
+        
+        try
+        {
+            _serverUdpClient?.Close();
+            _serverUdpClient?.Dispose();
+        }
+        catch { }
+        
+        try
+        {
+            _clientUdpClient?.Close();
+            _clientUdpClient?.Dispose();
+        }
+        catch { }
     }
 }
 

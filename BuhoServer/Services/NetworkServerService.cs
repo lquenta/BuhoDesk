@@ -103,7 +103,7 @@ public class NetworkServerService : IDisposable
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error accepting client: {ex.Message}");
+                _logger.Error("NetworkServer", $"Error accepting client: {ex.Message}");
             }
         }
     }
@@ -145,7 +145,7 @@ public class NetworkServerService : IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Client handling error: {ex.Message}");
+            _logger.Error("NetworkServer", $"Client handling error: {ex.Message}");
         }
         finally
         {

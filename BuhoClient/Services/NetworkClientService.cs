@@ -60,14 +60,11 @@ public class NetworkClientService : IDisposable
             var message = NetworkMessage.Create(MessageType.Connect, connectRequest);
             await SendMessageAsync(message);
 
-            _isConnected = true;
-            _framesReceived = 0;
-            _bytesReceived = 0;
-            
-            ConnectionStatusChanged?.Invoke(this, "Connected");
-            _logger.Info("NetworkClient", "Connection established successfully");
-
+            // Start receiving messages immediately to get the connection response
             _ = Task.Run(ReceiveMessagesAsync);
+            
+            // Don't set connected yet - wait for server response
+            _logger.Info("NetworkClient", "Connection request sent, waiting for server response...");
 
             return true;
         }
@@ -113,7 +110,7 @@ public class NetworkClientService : IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error sending mouse event: {ex.Message}");
+            _logger.Error("NetworkClient", $"Error sending mouse event: {ex.Message}");
         }
     }
 
@@ -128,7 +125,7 @@ public class NetworkClientService : IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error sending keyboard event: {ex.Message}");
+            _logger.Error("NetworkClient", $"Error sending keyboard event: {ex.Message}");
         }
     }
 
@@ -245,6 +242,21 @@ public class NetworkClientService : IDisposable
                 var response = message.GetData<ConnectionResponse>();
                 if (response != null)
                 {
+                    if (response.Success)
+                    {
+                        _isConnected = true;
+                        _framesReceived = 0;
+                        _bytesReceived = 0;
+                        
+                        ConnectionStatusChanged?.Invoke(this, "Connected");
+                        _logger.Info("NetworkClient", "Connection established successfully");
+                    }
+                    else
+                    {
+                        _logger.Error("NetworkClient", $"Connection failed: {response.Message}");
+                        ConnectionStatusChanged?.Invoke(this, $"Connection failed: {response.Message}");
+                        Disconnect();
+                    }
                     ConnectionResponseReceived?.Invoke(this, response);
                 }
                 break;
@@ -272,7 +284,7 @@ public class NetworkClientService : IDisposable
 
             case MessageType.Error:
                 var error = message.GetData<object>();
-                Console.WriteLine($"Server error: {error}");
+                _logger.Error("NetworkClient", $"Server error: {error}");
                 break;
         }
     }
